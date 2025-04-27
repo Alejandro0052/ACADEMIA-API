@@ -2,7 +2,7 @@
 const { json } = require('sequelize');
 const {Estudiante} = require('../models');
 
-exports.getAllEstudiantes = async (req, res) => {
+exports.getAllEstudiante = async (req, res) => {
 
     try{    
         const estudiantes = await Estudiante.findAll();
@@ -14,23 +14,28 @@ exports.getAllEstudiantes = async (req, res) => {
 }
 
 
-exports.createEstudiantes = async (req, res) => {
-
-    try{    
-        const estudiante = Estudiante.create(req.body);
-        res.status(201).json(curso);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-
-}   
+exports.createEstudiante = async (req, res) => {
+  try {
+    
+    console.log('Datos recibidos:', req.body);
+    
+    const estudiante = await Estudiante.create({
+      nombre: req.body.nombre,
+      email: req.body.email,
+      fecha_nacimiento: req.body.fecha_nacimiento
+    });
+    res.status(201).json(estudiante);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
 
 exports.getEstudianteById = async (req, res) => {
     try {
       const estudiante = await Estudiante.findByPk(req.params.id);
       if (!estudiante) {
-        return res.status(404).json({ error: 'Curso no encontrado' });
+        return res.status(404).json({ error: 'Estudiante no encontrado' });
       }
       res.json(estudiante);
     } catch (error) {
@@ -38,7 +43,7 @@ exports.getEstudianteById = async (req, res) => {
     }
   };
   
-  exports.updateEstudiantes = async (req, res) => {
+  exports.updateEstudiante = async (req, res) => {
     try {
       const [updated] = await Estudiante.update(req.body, {
         where: { id: req.params.id },
@@ -55,7 +60,7 @@ exports.getEstudianteById = async (req, res) => {
   
   exports.deleteEstudiante = async (req, res) => {
     try {
-      const deleted = await Matricula.destroy({
+      const deleted = await Estudiante.destroy({
         where: { id: req.params.id },
       });
       if (deleted) {

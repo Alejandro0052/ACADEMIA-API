@@ -2,7 +2,7 @@
 const { json } = require('sequelize');
 const {Matricula} = require('../models');
 
-exports.getAllCursos = async (req, res) => {
+exports.getAllMatricula = async (req, res) => {
 
     try{    
         const matriculas = await Matricula.findAll();
@@ -18,7 +18,7 @@ exports.createMatricula = async (req, res) => {
 
     try{    
         const matricula = Matricula.create(req.body);
-        res.status(201).json(curso);
+        res.status(201).json(matricula);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
@@ -26,12 +26,11 @@ exports.createMatricula = async (req, res) => {
 }   
 
 
-// Obtener un curso por ID
 exports.getMatriculaById = async (req, res) => {
     try {
       const matricula = await Matricula.findByPk(req.params.id);
       if (!matricula) {
-        return res.status(404).json({ error: 'Curso no encontrado' });
+        return res.status(404).json({ error: 'Matricula no encontrada' });
       }
       res.json(matricula);
     } catch (error) {
